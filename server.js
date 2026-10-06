@@ -11,7 +11,7 @@ const FILE = path.join(DIR, "links.json");
 
 const send = (res, code, body, type = "application/json") => {
   res.writeHead(code, { "Content-Type": type, "Cache-Control": "no-store" });
-  res.end(typeof body === "string" ? body : JSON.stringify(body));
+  res.end(typeof body === "string" || Buffer.isBuffer(body) ? body : JSON.stringify(body));
 };
 const authed = (req) => !PIN || req.headers["x-pin"] === PIN;
 
@@ -41,7 +41,7 @@ http.createServer((req, res) => {
     return;
   }
   if (url === "/" || url === "/index.html") {
-    return send(res, 200, fs.readFileSync(path.join(__dirname, "index.html")), "text/html; charset=utf-8");
+    return send(res, 200, fs.readFileSync(path.join(__dirname, "index.html"), "utf8"), "text/html; charset=utf-8");
   }
   send(res, 404, { error: "not found" });
 }).listen(PORT, "0.0.0.0", () => console.log("Dashboard-Sekom on " + PORT + ", data in " + DIR));
