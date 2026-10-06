@@ -78,7 +78,7 @@ input.f{font:inherit;width:100%;padding:9px 11px;border:1px solid var(--line);bo
   <div class="bar"><input class="search" id="q" type="search" placeholder="Cari tautan..." aria-label="Cari tautan"></div>
   <main>
     <div class="grid" id="grid"></div>
-    <p class="note" id="note">Perubahan tersimpan otomatis di browser ini.</p>
+    <p class="note" id="note">Perubahan tersimpan di server dan terlihat oleh semua pengguna. Edit butuh PIN.</p>
   </main>
 </div>
 <input type="file" id="file" accept="application/json" hidden>
@@ -101,7 +101,11 @@ var DEFAULT=[
 var data,edit=false,query="";
 function clone(o){return JSON.parse(JSON.stringify(o))}
 function load(){try{var s=localStorage.getItem(KEY);if(s){var d=JSON.parse(s);if(Array.isArray(d))return d}}catch(e){}return clone(DEFAULT)}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){toast("Penyimpanan browser tidak tersedia")}}
+var pin="",timer,serverEmpty=false;
+try{pin=sessionStorage.getItem("pin")||""}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}clearTimeout(timer);timer=setTimeout(push,600)}
+function push(){fetch("/api/data",{method:"PUT",headers:{"Content-Type":"application/json","x-pin":pin},body:JSON.stringify(data)}).then(function(r){if(r.status===401)toast("PIN salah, tidak tersimpan");else if(!r.ok)throw 0;else{serverEmpty=false;toast("Tersimpan")}}).catch(function(){toast("Gagal menyimpan ke server")})}
+function pull(){fetch("/api/data",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){if(Array.isArray(d)){if(!edit){data=d;try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}render()}}else serverEmpty=true}).catch(function(){})}
 function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2200)}
 function el(tag,attrs,kids){var n=document.createElement(tag);for(var k in attrs){if(k==="text")n.textContent=attrs[k];else n.setAttribute(k,attrs[k])}(kids||[]).forEach(function(c){n.appendChild(c)});return n}
 function safe(u){return /^https?:\/\//i.test(u)?u:"https://"+u}
@@ -153,7 +157,14 @@ function render(){
  ["add-group","export","import","reset"].forEach(function(id){document.getElementById(id).hidden=!edit});
  document.getElementById("sub").textContent=edit?"Mode edit: ubah judul, URL, urutan, atau grup.":new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 }
-document.getElementById("toggle").onclick=function(){edit=!edit;render()};
+document.getElementById("toggle").onclick=function(){
+ if(edit){edit=false;render();return}
+ var p=pin||prompt("Masukkan PIN edit:");if(p===null)return;
+ fetch("/api/auth",{method:"POST",headers:{"x-pin":p}}).then(function(r){
+  if(r.ok){pin=p;try{sessionStorage.setItem("pin",p)}catch(e){}edit=true;render();if(serverEmpty)push()}
+  else{pin="";try{sessionStorage.removeItem("pin")}catch(e){}toast("PIN salah")}
+ }).catch(function(){toast("Server tidak terjangkau")});
+};
 document.getElementById("q").oninput=function(e){query=e.target.value;render()};
 document.getElementById("add-group").onclick=function(){data.push({name:"Grup baru",links:[]});save();render()};
 document.getElementById("reset").onclick=function(){if(confirm("Kembalikan semua tautan ke daftar awal?")){data=clone(DEFAULT);save();render()}};
@@ -167,7 +178,8 @@ document.getElementById("file").onchange=function(e){
  r.onload=function(){try{var d=JSON.parse(r.result);if(!Array.isArray(d))throw 0;data=d;save();render();toast("Data diimpor")}catch(x){toast("File tidak valid")}};
  r.readAsText(f);e.target.value="";
 };
-data=load();render();
+data=load();render();pull();
+document.addEventListener("visibilitychange",function(){if(!document.hidden)pull()});
 </script>
 </body>
 </html>
