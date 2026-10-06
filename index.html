@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Sekretariat Komite</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%97%82%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&display=swap">
+<style>
+:root{--bg:#eef1f6;--surface:#fff;--ink:#0d1b33;--muted:#5f6b80;--line:#dbe1ec;--navy:#002f63;--navy2:#0a4a93;--gold:#f5a800;--soft:#f5f7fb;--warn:#b3261e;
+--c1:#0a4a93;--c2:#0f8a6d;--c3:#c27a00;--c4:#7a4fc2;--c5:#c23b6b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1220;--surface:#111c30;--ink:#e9eef8;--muted:#9aa8c0;--line:#223250;--navy:#06214a;--navy2:#5aa2ff;--soft:#0d1729;--warn:#ff8a80;--c1:#5aa2ff;--c2:#3fd1a8;--c3:#ffbf3f;--c4:#b896ff;--c5:#ff7aa8}}
+:root[data-theme="dark"]{--bg:#0a1220;--surface:#111c30;--ink:#e9eef8;--muted:#9aa8c0;--line:#223250;--navy:#06214a;--navy2:#5aa2ff;--soft:#0d1729;--warn:#ff8a80;--c1:#5aa2ff;--c2:#3fd1a8;--c3:#ffbf3f;--c4:#b896ff;--c5:#ff7aa8}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;line-height:1.5}
+.hero{background:linear-gradient(120deg,var(--navy) 0%,#0a3d7d 100%);color:#fff;border-bottom:4px solid var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+.hero .wrap{padding-top:30px;padding-bottom:26px;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between}
+h1{margin:0;font-size:clamp(1.7rem,4.5vw,2.5rem);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.sub{margin:8px 0 0;color:#c4d3ea;font-size:.95rem}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;font-weight:600;font-size:.88rem;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 15px;min-height:42px}
+button:hover{border-color:var(--navy2)}
+.hero button{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.3)}
+.hero button:hover{background:rgba(255,255,255,.2);border-color:#fff}
+.hero button.on{background:var(--gold);color:#241800;border-color:var(--gold)}
+button.danger{color:var(--warn)}
+.hero button.danger{color:#ffb4ab}
+.icon{padding:6px 10px;min-height:34px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.bar{margin:-22px 0 22px}
+.search{width:100%;padding:14px 18px;font:inherit;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);box-shadow:0 6px 20px rgba(0,20,60,.12)}
+main{padding-bottom:56px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:20px;align-items:start}
+section{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 18px 10px;border-top:5px solid var(--c);box-shadow:0 2px 0 rgba(0,20,60,.04)}
+.gh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 6px}
+h2{font-size:1.15rem;margin:0;font-weight:800;letter-spacing:-.01em}
+.cnt{font-size:.8rem;color:var(--muted)}
+.link{display:flex;align-items:center;gap:12px;padding:12px 10px;margin:0 -10px;border-radius:12px;color:var(--ink);text-decoration:none;transition:background .15s}
+.link+.link{margin-top:2px}
+.link:hover{background:var(--soft)}
+.link:hover .t{color:var(--c)}
+.badge{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:.7rem;font-weight:800;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.txt{min-width:0}
+.t{display:block;font-weight:600;font-size:.98rem}
+.h{display:block;font-size:.76rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row{display:grid;grid-template-columns:1fr auto;gap:6px;padding:12px 0;border-top:1px dashed var(--line)}
+.row .u{font-size:.8rem;color:var(--muted)}
+.row .ctl{display:flex;gap:4px;grid-row:1/3;grid-column:2;align-items:flex-start}
+input.f{font:inherit;width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--ink);min-width:0}
+.ghead{display:flex;gap:6px;margin-bottom:8px}
+.ghead input{font-weight:800}
+.add{width:100%;margin:10px 0 8px;border-style:dashed;color:var(--muted)}
+.empty{color:var(--muted);font-size:.9rem;padding:10px 0 14px}
+.note{margin:26px 0 0;color:var(--muted);font-size:.8rem}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:10px;font-size:.88rem;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="hero"><div class="wrap">
+  <div>
+    <h1>Dashboard Sekretariat Komite</h1>
+    <p class="sub" id="sub"></p>
+  </div>
+  <div class="tools">
+    <button id="add-group" hidden>Tambah grup</button>
+    <button id="export" hidden>Ekspor</button>
+    <button id="import" hidden>Impor</button>
+    <button id="reset" class="danger" hidden>Reset</button>
+    <button id="toggle">Edit</button>
+  </div>
+</div></div>
+<div class="wrap">
+  <div class="bar"><input class="search" id="q" type="search" placeholder="Cari tautan..." aria-label="Cari tautan"></div>
+  <main>
+    <div class="grid" id="grid"></div>
+    <p class="note" id="note">Perubahan tersimpan otomatis di browser ini.</p>
+  </main>
+</div>
+<input type="file" id="file" accept="application/json" hidden>
+<div class="toast" id="toast" role="status"></div>
+<script>
+var KEY="sekretariat-komite-v1";
+var DEFAULT=[
+{name:"Realisasi",links:[
+ {t:"Realisasi 2026",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/fakhri_arsalan_bankmandiri_co_id/IQC7xhG9d8odQKbIs00xMwZKAZs832oOFetOLLzlioMsdqA?e=M0OVja"},
+ {t:"Realisasi 2025",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/muhammad_akbarsyah_bankmandiri_co_id/IQArkrRF12PNR5-ZcAbVwguuAYUfWcVMczSOCtAUT_-Ca-0?e=rNF76M"}]},
+{name:"Portal & Monitoring",links:[
+ {t:"NAK Portal",u:"https://bankmandiri1.sharepoint.com/sites/NewPortalBankMandiri/ccrm/NAK/Document%20Library/Forms/2026.aspx?viewid=d606ca5a%2D3b09%2D40c7%2Dbc8f%2Dcc8de8ff406c"},
+ {t:"UP BU TW I & TW II 2026",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/rita_wati_bankmandiri_co_id/IQBYlRNn_ZnuQ67CMZjpg2P4ASc5-IwW1ed9HDUm8FBQ3DQ?e=SSMaFU"},
+ {t:"Pending Harian CT",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/mohamad_rakhmawan_bankmandiri_co_id/IQDSjjiGjI1eQYMpiOLbs1_KATKqWOsrl3uxQN-oJyPcpsE?e=dzfeJ1"},
+ {t:"Tools Monitoring Dokumen",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/adib_aramadhan_bankmandiri_co_id/IQCCXLqmPQKCS403HIo3cudFAeQPLdhqG6ITdAri1EOGHXI?e=F8J0Vw"}]},
+{name:"Dokumentasi",links:[
+ {t:"MOM Morning Briefing",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/giffari_alhadi_bankmandiri_co_id/IQA2H9ELsJ5CQ7FkbT63E_s3AfTTcM55mVTJJc0q60XSujE?e=ZeJf8k"},
+ {t:"Dokumentasi RKK",u:"https://bankmandiri1-my.sharepoint.com/:x:/g/personal/giffari_alhadi_bankmandiri_co_id/IQD1YRaEbFNwSLZ5Wuzpk3tzAaJBERirPxuC_uuScr9nFSo?e=SvyfqO"}]}
+];
+var data,edit=false,query="";
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function load(){try{var s=localStorage.getItem(KEY);if(s){var d=JSON.parse(s);if(Array.isArray(d))return d}}catch(e){}return clone(DEFAULT)}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){toast("Penyimpanan browser tidak tersedia")}}
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2200)}
+function el(tag,attrs,kids){var n=document.createElement(tag);for(var k in attrs){if(k==="text")n.textContent=attrs[k];else n.setAttribute(k,attrs[k])}(kids||[]).forEach(function(c){n.appendChild(c)});return n}
+function safe(u){return /^https?:\/\//i.test(u)?u:"https://"+u}
+function host(u){try{return new URL(safe(u)).hostname.replace(/^www\./,"")}catch(e){return ""}}
+function kind(u){return /\/:x:\//.test(u)?"XLS":/\/:w:\//.test(u)?"DOC":/\/:p:\//.test(u)?"PPT":/\/:f:\//.test(u)?"DIR":"WEB"}
+function move(arr,i,d){var j=i+d;if(j<0||j>=arr.length)return;var x=arr.splice(i,1)[0];arr.splice(j,0,x);save();render()}
+function render(){
+ var g=document.getElementById("grid");g.innerHTML="";
+ var qq=query.trim().toLowerCase(),any=false;
+ data.forEach(function(grp,gi){
+  var s=el("section");s.style.setProperty("--c","var(--c"+((gi%5)+1)+")");
+  if(edit){
+   var nm=el("input",{class:"f",value:grp.name,"aria-label":"Nama grup"});
+   nm.oninput=function(){grp.name=nm.value;save()};
+   var up=el("button",{class:"icon",text:"\u2191","aria-label":"Geser grup ke atas"});up.onclick=function(){move(data,gi,-1)};
+   var dn=el("button",{class:"icon",text:"\u2193","aria-label":"Geser grup ke bawah"});dn.onclick=function(){move(data,gi,1)};
+   var del=el("button",{class:"icon danger",text:"Hapus"});
+   del.onclick=function(){if(confirm("Hapus grup \""+grp.name+"\" beserta semua tautannya?")){data.splice(gi,1);save();render()}};
+   s.appendChild(el("div",{class:"ghead"},[nm,up,dn,del]));
+   grp.links.forEach(function(l,li){
+    var t=el("input",{class:"f",value:l.t,placeholder:"Judul","aria-label":"Judul"});
+    var u=el("input",{class:"f u",value:l.u,placeholder:"https://...","aria-label":"URL"});
+    t.oninput=function(){l.t=t.value;save()};u.oninput=function(){l.u=u.value;save()};
+    var a=el("button",{class:"icon",text:"\u2191","aria-label":"Geser ke atas"});a.onclick=function(){move(grp.links,li,-1)};
+    var b=el("button",{class:"icon",text:"\u2193","aria-label":"Geser ke bawah"});b.onclick=function(){move(grp.links,li,1)};
+    var d=el("button",{class:"icon danger",text:"Hapus"});d.onclick=function(){grp.links.splice(li,1);save();render()};
+    s.appendChild(el("div",{class:"row"},[t,el("div",{class:"ctl"},[a,b,d]),u]));
+   });
+   var ad=el("button",{class:"add",text:"Tambah tautan"});
+   ad.onclick=function(){grp.links.push({t:"",u:""});save();render()};
+   s.appendChild(ad);any=true;
+  }else{
+   var list=grp.links.filter(function(l){return (l.t||l.u)&&(!qq||(l.t+" "+l.u+" "+grp.name).toLowerCase().indexOf(qq)>-1)});
+   if(qq&&!list.length)return;
+   s.appendChild(el("div",{class:"gh"},[el("h2",{text:grp.name}),el("span",{class:"cnt",text:list.length+" tautan"})]));
+   list.forEach(function(l){
+    var a=el("a",{class:"link",href:safe(l.u||"#"),target:"_blank",rel:"noopener noreferrer"},[
+     el("span",{class:"badge",text:kind(l.u)}),
+     el("span",{class:"txt"},[el("span",{class:"t",text:l.t||l.u}),el("span",{class:"h",text:host(l.u)})])]);
+    s.appendChild(a);
+   });
+   if(!list.length)s.appendChild(el("p",{class:"empty",text:"Belum ada tautan. Klik Edit untuk menambah."}));
+   any=true;
+  }
+  g.appendChild(s);
+ });
+ if(!g.children.length)g.appendChild(el("p",{class:"empty",text:qq?"Tidak ada tautan yang cocok.":"Belum ada grup. Klik Edit lalu Tambah grup."}));
+ var tg=document.getElementById("toggle");tg.textContent=edit?"Selesai":"Edit";tg.classList.toggle("on",edit);
+ ["add-group","export","import","reset"].forEach(function(id){document.getElementById(id).hidden=!edit});
+ document.getElementById("sub").textContent=edit?"Mode edit: ubah judul, URL, urutan, atau grup.":new Date().toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+}
+document.getElementById("toggle").onclick=function(){edit=!edit;render()};
+document.getElementById("q").oninput=function(e){query=e.target.value;render()};
+document.getElementById("add-group").onclick=function(){data.push({name:"Grup baru",links:[]});save();render()};
+document.getElementById("reset").onclick=function(){if(confirm("Kembalikan semua tautan ke daftar awal?")){data=clone(DEFAULT);save();render()}};
+document.getElementById("export").onclick=function(){
+ var b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="dashboard-sekretariat-komite.json";document.body.appendChild(a);a.click();a.remove();toast("Cadangan diunduh");
+};
+document.getElementById("import").onclick=function(){document.getElementById("file").click()};
+document.getElementById("file").onchange=function(e){
+ var f=e.target.files[0];if(!f)return;var r=new FileReader();
+ r.onload=function(){try{var d=JSON.parse(r.result);if(!Array.isArray(d))throw 0;data=d;save();render();toast("Data diimpor")}catch(x){toast("File tidak valid")}};
+ r.readAsText(f);e.target.value="";
+};
+data=load();render();
+</script>
+</body>
+</html>
